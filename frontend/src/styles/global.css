@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background: #f0f2f5;
+}
+
+h2 {
+  margin-bottom: 16px;
+}
+
+.ant-layout {
+  background: #f0f2f5;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+}
+
+.ant-layout-content {
+  padding: 24px;
+  min-height: 80vh;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.ant-layout-footer {
+  text-align: center;
+  background: #001529;
+  color: #fff;
+}
