@@ -2,19 +2,13 @@ pipeline {
     agent any
 
     environment {
-        // -----------------------
-        // Tools
-        // -----------------------
-        JAVA_HOME   = tool name: 'JDK25', type: 'jdk'      // Your installed JDK
-        NODEJS_HOME = tool name: 'Node18', type: 'nodejs'  // Jenkins NodeJS installation
-
-        // Combine Java and NodeJS binaries into PATH
+        // Backend
+        JAVA_HOME = tool name: 'JDK25', type: 'jdk'        // Your Jenkins JDK installation
+        NODEJS_HOME = tool name: 'Node18', type: 'nodejs'  // Your Jenkins NodeJS installation
         PATH = "${JAVA_HOME}/bin:${NODEJS_HOME}/bin:${env.PATH}"
 
-        // -----------------------
-        // Secrets
-        // -----------------------
-        SENDGRID_API_KEY = credentials('SENDGRID_API_KEY')  // Never hardcode secrets
+        // Secrets (from Jenkins credentials)
+        SENDGRID_API_KEY = credentials('SENDGRID_API_KEY')
     }
 
     stages {
@@ -30,10 +24,12 @@ pipeline {
         stage('Backend Build & Test') {
             steps {
                 dir('backend') {
-                    // Use the Maven tool you configured in Jenkins
-                    def mvnHome = tool name: 'Maven3', type: 'maven' // <-- your Maven name
-                    sh "${mvnHome}/bin/mvn clean package"
-                    sh "${mvnHome}/bin/mvn test"
+                    script {
+                        // Use Maven installed in Jenkins
+                        def mvnHome = tool name: 'Maven3', type: 'maven'
+                        sh "${mvnHome}/bin/mvn clean package"
+                        sh "${mvnHome}/bin/mvn test"
+                    }
                 }
             }
             post {
@@ -57,13 +53,12 @@ pipeline {
         stage('Run Playwright E2E Tests') {
             steps {
                 dir('frontend') {
-                    // Headed mode so you can watch browser interactions
+                    // Headed mode to watch the browser
                     sh 'npx playwright test --headed'
                 }
             }
             post {
                 always {
-                    // Archive Playwright report artifacts
                     archiveArtifacts artifacts: 'frontend/playwright-report/**', allowEmptyArchive: true
                 }
             }
