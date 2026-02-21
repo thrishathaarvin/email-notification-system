@@ -2,14 +2,19 @@ pipeline {
     agent any
 
     environment {
-        // Backend
-        JAVA_HOME = tool name: 'JDK25', type: 'jdk'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-        // Frontend
-        NODEJS_HOME = tool name: 'Node18', type: 'nodejs'
-        PATH = "${NODEJS_HOME}/bin:${env.PATH}"
-        // Secrets (do NOT hardcode real keys in code!)
-        SENDGRID_API_KEY = credentials('SENDGRID_API_KEY')
+        // -----------------------
+        // Tools
+        // -----------------------
+        JAVA_HOME   = tool name: 'JDK25', type: 'jdk'      // Your installed JDK
+        NODEJS_HOME = tool name: 'Node18', type: 'nodejs'  // Jenkins NodeJS installation
+
+        // Combine Java and NodeJS binaries into PATH
+        PATH = "${JAVA_HOME}/bin:${NODEJS_HOME}/bin:${env.PATH}"
+
+        // -----------------------
+        // Secrets
+        // -----------------------
+        SENDGRID_API_KEY = credentials('SENDGRID_API_KEY')  // Never hardcode secrets
     }
 
     stages {
