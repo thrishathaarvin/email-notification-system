@@ -30,8 +30,10 @@ pipeline {
         stage('Backend Build & Test') {
             steps {
                 dir('backend') {
-                    sh 'mvn clean package'
-                    sh 'mvn test'
+                    // Use the Maven tool you configured in Jenkins
+                    def mvnHome = tool name: 'Maven3', type: 'maven' // <-- your Maven name
+                    sh "${mvnHome}/bin/mvn clean package"
+                    sh "${mvnHome}/bin/mvn test"
                 }
             }
             post {
