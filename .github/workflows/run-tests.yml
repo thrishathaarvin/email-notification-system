@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build & run backend tests
-        run: mvn clean test \ -Dsurefire.printSummary=true \ -Dsurefire.useFile=false \ -Dmaven.test.failure.ignore=false
+        run: mvn clean test -Dsurefire.printSummary=true -Dsurefire.useFile=false -Dmaven.test.failure.ignore=false
         working-directory: backend   # ⚡ Make sure Maven runs in backend folder
 
       - name: Upload backend test results
