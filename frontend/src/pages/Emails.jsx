@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { Tag, Table, Button, Select } from "antd";
+import { Tag, Modal, Table, Button, Select } from "antd";
 import { getEmails, deleteEmail } from "../api/emailApi";
 import { AppContext } from "../context/AppContext";
 import ComposeEmailModal from "../components/emails/ComposeEmailModal";

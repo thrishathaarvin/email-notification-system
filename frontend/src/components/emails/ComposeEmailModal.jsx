@@ -15,7 +15,7 @@ export default function ComposeEmailModal({ visible, onClose, onSent }) {
       setLoading(true);
 
       await sendEmail(values);
-      notify("success", "Email queued successfully!");
+      notify("success", "Email sent successfully!");
       form.resetFields();
       onSent(); // refresh table
       onClose();

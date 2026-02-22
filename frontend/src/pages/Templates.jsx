@@ -107,7 +107,9 @@ export default function Templates() {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => (
+      render: (_, record) => {
+      console.log("TEMPLATE RECORD 👉", record);
+      return (
         <>
           <Button
             style={{ marginRight: 8 }}
@@ -120,16 +122,17 @@ export default function Templates() {
             Delete
           </Button>
         </>
-      ),
+      );
+    },
     },
   ];
 
   return (
     <div>
       <h2>Templates</h2>
-      <Button type="primary" style={{ marginBottom: 16 }}>
+      {/* <Button type="primary" style={{ marginBottom: 16 }}>
         <Link to="/newtemplate">New Template</Link>
-      </Button>
+      </Button> */}
 
       <Table
         columns={columns}
