@@ -12,6 +12,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+
+//Email template data to be exchanged b/w frontend and backend
 public class TemplateRequestDto {
 
     private UUID id;
@@ -19,6 +21,7 @@ public class TemplateRequestDto {
     private String subject;
     private String body;
 
+    //To return existing templates to frontend
     public TemplateRequestDto(EmailTemplate template) {
         this.id=template.getId();
         this.name = template.getTemplateName();
@@ -26,6 +29,7 @@ public class TemplateRequestDto {
         this.body = template.getContentBody();
     }
 
+    //To create new template
     public TemplateRequestDto(String templateName, String subjectLine, String contentBody) {
         this.name=templateName;
         this.subject=subjectLine;
