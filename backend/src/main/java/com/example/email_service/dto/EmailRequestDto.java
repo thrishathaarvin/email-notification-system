@@ -7,6 +7,8 @@ import java.util.UUID;
 
 @Setter
 @Getter
+
+//this is used to receive email send requests from frontend
 public class EmailRequestDto {
 
     private String to;
