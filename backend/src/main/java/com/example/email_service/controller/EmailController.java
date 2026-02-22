@@ -59,7 +59,7 @@ public class EmailController {
             dto.setFromEmail(email.getSenderEmail());
             dto.setSubject(email.getFinalSubject());
             dto.setBody(email.getFinalBody());
-            dto.setDeliveryStatus(email.getDeliveryStatus().name());
+            dto.setDeliveryStatus(email.getStatus().name());
             dto.setCreatedAt(email.getCreatedAt());
             return dto;
         }).toList();
@@ -75,7 +75,7 @@ public class EmailController {
         email.setFinalSubject(request.getSubject());
         email.setFinalBody(request.getBody());
         email.setSenderEmail(request.getFrom());
-        email.setDeliveryStatus(DeliveryStatus.CREATED);
+        email.setStatus(DeliveryStatus.CREATED);
         email.setCreatedAt(LocalDateTime.now());
 
         email = emailRepository.save(email);
@@ -86,13 +86,13 @@ public class EmailController {
                     request.getSubject(), request.getBody()
             );
 
-            email.setDeliveryStatus(DeliveryStatus.SENT);
+            email.setStatus(DeliveryStatus.SENT);
             email.setProviderTrackingId(providerId);
             emailRepository.save(email);
 
             return "Email sent successfully";
         } catch (Exception e) {
-            email.setDeliveryStatus(DeliveryStatus.FAILED);
+            email.setStatus(DeliveryStatus.FAILED);
             emailRepository.save(email);
             throw new RuntimeException("Failed to send email: " + e.getMessage());
         }
@@ -110,7 +110,7 @@ public class EmailController {
         dto.setFromEmail(email.getSenderEmail());
         dto.setSubject(email.getFinalSubject());
         dto.setBody(email.getFinalBody());
-        dto.setDeliveryStatus(email.getDeliveryStatus().name());
+        dto.setDeliveryStatus(email.getStatus().name());
         dto.setCreatedAt(email.getCreatedAt());
 
         return ResponseEntity.ok(dto);
