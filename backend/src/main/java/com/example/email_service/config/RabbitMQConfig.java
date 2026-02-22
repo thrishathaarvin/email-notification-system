@@ -11,6 +11,6 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue emailStatusQueue() {
-        return new Queue(EMAIL_STATUS_QUEUE, true);  // durable queue
+        return new Queue(EMAIL_STATUS_QUEUE, true);
     }
 }
