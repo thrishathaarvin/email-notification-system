@@ -37,6 +37,8 @@ class SendGridEventConsumerTest {
         closeable.close();
     }
 
+    //creates a mock mail, stubs the repo with it,
+    //sends a fake sendgrid event and checks for update
     @Test
     void consume_updatesStatusAndHistory() {
 
