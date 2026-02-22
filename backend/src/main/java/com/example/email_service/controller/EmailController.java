@@ -7,7 +7,6 @@ import com.example.email_service.model.enums.DeliveryStatus;
 import com.example.email_service.repository.EmailRepository;
 import com.example.email_service.service.EmailDispatchService;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +14,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+//This is where we expose API for:
+//1. Sending email
+//2. Fetch emails based on status
+//3. View a mail
+//4. Delete a mail
+
 @RestController
 @RequestMapping("/api/emails")
 public class EmailController {
 
+    //Here we perform constructor injection
     private final EmailRepository emailRepository;
     private final EmailDispatchService dispatchService;
 
@@ -28,12 +34,12 @@ public class EmailController {
         this.dispatchService = dispatchService;
     }
 
-    // ✅ GET emails with optional status & recipient filters
+    // here, this is mainly used to fetch all emails, filters are optional (mail status)
+    //Response entity represents entire http response not just body (headers, body, status code)
+
     @GetMapping
     public ResponseEntity<List<EmailNotificationDto>> getAllEmails(
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String recipient
-    ) {
+            @RequestParam(required = false) String status) {
         DeliveryStatus deliveryStatus = null;
         if (status != null && !status.isBlank()) {
             deliveryStatus = DeliveryStatus.valueOf(status.toUpperCase());
@@ -41,7 +47,7 @@ public class EmailController {
 
         List<EmailNotification> emails = emailRepository.filterEmails(
                 deliveryStatus,
-                recipient,
+                null,
                 null,
                 null
         );
@@ -61,6 +67,7 @@ public class EmailController {
         return ResponseEntity.ok(dtos);
     }
 
+    //this handles sending email through send grid, persists the email first, then sends
     @PostMapping("/send")
     public String sendEmail(@RequestBody EmailRequestDto request) {
         EmailNotification email = new EmailNotification();
@@ -91,6 +98,7 @@ public class EmailController {
         }
     }
 
+    //This is for fetching single mail, mainly for email details page
     @GetMapping("/{id}")
     public ResponseEntity<EmailNotificationDto> getEmailById(@PathVariable UUID id) {
         EmailNotification email = emailRepository.findById(id)
@@ -108,6 +116,7 @@ public class EmailController {
         return ResponseEntity.ok(dto);
     }
 
+    //This is to delete mail if it exists in repo
     @DeleteMapping("/{id}")
     public String deleteEmail(@PathVariable UUID id) {
         if (!emailRepository.existsById(id)) {
