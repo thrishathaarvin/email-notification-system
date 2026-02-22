@@ -8,6 +8,8 @@ import java.util.UUID;
 
 @Setter
 @Getter
+
+//This defines the payload data for async email processing using queue
 public class EmailQueueMessage implements Serializable {
 
     private UUID emailId;
