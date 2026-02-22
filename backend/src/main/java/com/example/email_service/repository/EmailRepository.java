@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+//this has custom queries for filter using status and dashboard graph purposes
 public interface EmailRepository extends JpaRepository<EmailNotification, UUID> {
 
     long countByStatus(DeliveryStatus deliveryStatus);
@@ -29,13 +30,5 @@ public interface EmailRepository extends JpaRepository<EmailNotification, UUID> 
             @Param("end") LocalDateTime end
     );
 
-    @Query("SELECT e FROM EmailNotification e WHERE (:start IS NULL OR e.createdAt >= :start) " +
-            "AND (:end IS NULL OR e.createdAt <= :end)")
-    List<EmailNotification> findAllInRange(
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end
-    );
-
-    // ✅ Add this derived query for last 7 days
     List<EmailNotification> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
