@@ -9,37 +9,37 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+//handles CRUD for templates
 @Service
 public class TemplateService {
 
+    //dependency injection
     private final TemplateRepository repository;
-
     public TemplateService(TemplateRepository repository) {
         this.repository = repository;
     }
 
-    public EmailTemplate createTemplate(TemplateRequestDto dto) {
+    // CREATE
+    public TemplateRequestDto createTemplate(TemplateRequestDto dto) {
         EmailTemplate template = new EmailTemplate();
         template.setTemplateName(dto.getName());
         template.setSubjectLine(dto.getSubject());
         template.setContentBody(dto.getBody());
-        return repository.save(template);
+
+        EmailTemplate saved = repository.save(template);
+        return new TemplateRequestDto(saved); // ✅ return DTO with ID
     }
 
+    // READ
     public List<TemplateRequestDto> getAllTemplates() {
         return repository.findAll()
                 .stream()
-                .map(template -> new TemplateRequestDto(
-                        template.getTemplateName(),    // name
-                        template.getSubjectLine(),     // subject
-                        template.getContentBody()      // body
-                ))
+                .map(TemplateRequestDto::new)
                 .collect(Collectors.toList());
     }
 
+    // DELETE
     public void deleteTemplate(UUID id) {
         repository.deleteById(id);
     }
-
-
 }
