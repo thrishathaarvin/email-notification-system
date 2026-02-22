@@ -33,6 +33,7 @@ class TemplateControllerTest {
         closeable.close();
     }
 
+    //checks if the controller correctly interacts with service
     @Test
     void create_callsServiceCreateTemplate() {
 
@@ -54,6 +55,7 @@ class TemplateControllerTest {
         System.out.println("Test completed successfully");
     }
 
+    //ensures controller returns list correctly without altering data
     @Test
     void getAllTemplates_returnsTemplatesFromService() {
 
@@ -80,6 +82,7 @@ class TemplateControllerTest {
         System.out.println("Test completed successfully");
     }
 
+    //checks if controller correctly triggers deletion
     @Test
     void deleteTemplate_callsServiceDeleteTemplate() {
 
