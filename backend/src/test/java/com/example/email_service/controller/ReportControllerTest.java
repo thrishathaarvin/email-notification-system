@@ -30,6 +30,7 @@ class ReportControllerTest {
         closeable.close();
     }
 
+    //for summary - here we mock the response (5 sent, 2 failed), then we stub the service method to return this mock
     @Test
     void getSummary_returnsSummaryFromService() {
 
@@ -53,6 +54,7 @@ class ReportControllerTest {
         System.out.println("Test completed successfully");
     }
 
+    //for dashboard - same as above
     @Test
     void getDashboardData_returnsDashboardDataFromService() {
 
