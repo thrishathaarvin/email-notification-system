@@ -38,7 +38,7 @@ public class SendGridEventConsumer {
 
         //converting string event to enum, updates and saves in repo
         DeliveryStatus status = mapEvent(event.getEvent());
-        email.setDeliveryStatus(status);
+        email.setStatus(status);
         emailRepository.save(email);
 
         //now, this is created in delivery history table for audit purpose
