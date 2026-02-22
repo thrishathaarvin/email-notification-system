@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+//this logs delivery event, for auditing
 @Entity
 @Table(name = "email_delivery_history")
 @Getter
