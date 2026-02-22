@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+//This is for storing the email data and status
 @Entity
 @Table(name = "email_notification")
 @Getter
@@ -33,7 +34,6 @@ public class EmailNotification {
     @Column(nullable = false)
     private String finalBody;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Getter
@@ -51,14 +51,4 @@ public class EmailNotification {
 
     @Getter
     private UUID templateId;
-
-
-    public void setDeliveryStatus(DeliveryStatus status) {
-        this.status=status;
-    }
-
-    public DeliveryStatus getDeliveryStatus() {
-        return this.status;
-    }
-
 }
