@@ -1,6 +1,5 @@
 name: Backend CI
 
-# Trigger on pushes or PRs to main/master
 on:
   push:
     branches:
@@ -12,9 +11,6 @@ on:
       - master
 
 jobs:
-  # ===========================
-  # Backend Java Tests
-  # ===========================
   backend:
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +32,10 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build & run backend tests
-        run: mvn clean test -Dmaven.test.failure.ignore=true
-        working-directory: backend   # ⚡ Make sure Maven runs in backend folder
+        run: mvn -B -V clean test \
+          -Dsurefire.printSummary=true \
+          -Dmaven.test.failure.ignore=false
+        working-directory: backend
 
       - name: Upload backend test results
         uses: actions/upload-artifact@v4
