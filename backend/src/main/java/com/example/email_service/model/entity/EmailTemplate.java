@@ -7,10 +7,9 @@ import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.Id;
-
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+//Represents templates entity
 @Getter
 @Setter
 @Entity
@@ -29,19 +28,4 @@ public class EmailTemplate {
     @Lob
     private String contentBody;
 
-    @Column(columnDefinition = "json")
-    private String placeholders;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-//    @Setter
-//    private String name;
-//
-//    @Setter
-//    private String subject;
-//
-//    @Setter
-//    private String body;
-//
 }
