@@ -8,8 +8,9 @@ import java.util.UUID;
 
 @Setter
 @Getter
+
+//This is used to expose email data from backend to frontend
 public class EmailNotificationDto {
-    // ✅ Getters & Setters
     private UUID id;
     private String recipientEmail;
     private String fromEmail;
