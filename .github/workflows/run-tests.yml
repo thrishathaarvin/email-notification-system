@@ -76,7 +76,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # required by SonarCloud GitHub integration
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # your SonarCloud token
-        run:
+        run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=thrishathaarvin_email-notification-system \
             -Dsonar.organization=thrishathaarvin \
