@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       # -------------------------------
-      # 4. Cache Sonar packages
+      # 4. Cache SonarCloud packages
       # -------------------------------
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
@@ -53,14 +53,14 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       # -------------------------------
-      # 5. Build & run tests
+      # 5. Build & run backend tests
       # -------------------------------
       - name: Build & run backend tests
-        run: mvn clean test -Dmaven.test.failure.ignore=true
         working-directory: backend
+        run: mvn clean test -Dmaven.test.failure.ignore=true
 
       # -------------------------------
-      # 6. Upload test reports
+      # 6. Upload backend test reports
       # -------------------------------
       - name: Upload backend test results
         uses: actions/upload-artifact@v4
@@ -72,6 +72,7 @@ jobs:
       # 7. SonarCloud Analysis
       # -------------------------------
       - name: Build and analyze with SonarCloud
+        working-directory: backend
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # required by SonarCloud GitHub integration
@@ -81,5 +82,5 @@ jobs:
             -Dsonar.projectKey=thrishathaarvin_email-notification-system \
             -Dsonar.organization=thrishathaarvin \
             -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.java.binaries=target/classes
-        working-directory: backend
