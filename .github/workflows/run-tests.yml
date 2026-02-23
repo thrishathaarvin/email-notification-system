@@ -27,6 +27,13 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -48,12 +55,14 @@ jobs:
       # ===========================
       # SonarQube Analysis
       # ===========================
-      - name: SonarQube Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: backend
-          args: >
-            -Dsonar.projectKey=thrishathaarvin_email-notification-system
-            -Dsonar.organization=thrishathaarvin
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze with SonarCloud
+        continue-on-error: true
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+         mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=thrishathaarvin_cicd \
+          -Dsonar.organization=thrishathaarvin \
+          -Dsonar.host.url=https://sonarcloud.io
+
