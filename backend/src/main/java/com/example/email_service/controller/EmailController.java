@@ -86,7 +86,7 @@ public class EmailController {
                     request.getSubject(), request.getBody()
             );
 
-            email.setStatus(DeliveryStatus.SENT);
+            email.setStatus(DeliveryStatus.CREATED);
             email.setProviderTrackingId(providerId);
             emailRepository.save(email);
 
