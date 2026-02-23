@@ -13,7 +13,7 @@ on:
 
 jobs:
   # ===========================
-  # Backend Java Tests
+  # Backend Java Tests + SonarQube
   # ===========================
   backend:
     runs-on: ubuntu-latest
@@ -37,10 +37,23 @@ jobs:
 
       - name: Build & run backend tests
         run: mvn clean test -Dmaven.test.failure.ignore=true
-        working-directory: backend   # ⚡ Make sure Maven runs in backend folder
+        working-directory: backend
 
       - name: Upload backend test results
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-results
           path: backend/target/surefire-reports/
+
+      # ===========================
+      # SonarQube Analysis
+      # ===========================
+      - name: SonarQube Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: backend
+          args: >
+            -Dsonar.projectKey=thrishathaarvin_email-notification-system
+            -Dsonar.organization=thrishathaarvin
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
