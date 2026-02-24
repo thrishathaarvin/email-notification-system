@@ -1,6 +1,6 @@
 package com.example.email_service.service;
 
-import com.example.email_service.dto.EmailQueueMessage;
+//import com.example.email_service.dto.EmailQueueMessage;
 import com.example.email_service.model.entity.EmailNotification;
 import com.example.email_service.model.enums.DeliveryStatus;
 import com.example.email_service.repository.EmailRepository;
