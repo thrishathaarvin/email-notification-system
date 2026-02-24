@@ -18,6 +18,14 @@ public class EmailDispatchService {
     @Value("${sendgrid.api.key}")
     private String sendGridApiKey;
 
+    //Dependency injection
+    private final SendGrid sendGrid;
+    private final EmailRepository emailRepository;
+    public EmailDispatchService(SendGrid sendGrid, EmailRepository emailRepository) {
+        this.sendGrid = sendGrid;
+        this.emailRepository = emailRepository;
+    }
+
     public String sendEmailDirectly(String from, String to, String subject, String body) throws IOException, IOException {
         Email fromEmail = new Email(from);
         Email toEmail = new Email(to);
