@@ -1,6 +1,6 @@
 name: Backend CI
 
-# Trigger on pushes or PRs to main/master
+# Trigger workflow on pushes or PRs to main/master
 on:
   push:
     branches:
@@ -12,21 +12,28 @@ on:
       - master
 
 jobs:
-  # ===========================
-  # Backend Java Tests
-  # ===========================
   backend:
     runs-on: ubuntu-latest
+
     steps:
+      # -------------------------------
+      # 1. Checkout code
+      # -------------------------------
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # -------------------------------
+      # 2. Set up JDK
+      # -------------------------------
       - name: Set up JDK 25
         uses: actions/setup-java@v3
         with:
           java-version: '25'
           distribution: 'temurin'
 
+      # -------------------------------
+      # 3. Cache Maven dependencies
+      # -------------------------------
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -35,12 +42,45 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Build & run backend tests
-        run: mvn clean test -Dmaven.test.failure.ignore=true
-        working-directory: backend   # ⚡ Make sure Maven runs in backend folder
+      # -------------------------------
+      # 4. Cache SonarCloud packages
+      # -------------------------------
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
+      # -------------------------------
+      # 5. Build & run backend tests
+      # -------------------------------
+      - name: Build & run backend tests
+        working-directory: backend
+        run: mvn clean test -Dmaven.test.failure.ignore=true
+
+      # -------------------------------
+      # 6. Upload backend test reports
+      # -------------------------------
       - name: Upload backend test results
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-results
           path: backend/target/surefire-reports/
+
+      # -------------------------------
+      # 7. SonarCloud Analysis
+      # -------------------------------
+      - name: Build and analyze with SonarCloud
+        working-directory: backend
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # required by SonarCloud GitHub integration
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # your SonarCloud token
+        run: |
+          mvn clean verify sonar:sonar \
+            -Dsonar.projectKey=thrishathaarvin_email-notification-system \
+            -Dsonar.organization=thrishathaarvin \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.java.binaries=target/classes
