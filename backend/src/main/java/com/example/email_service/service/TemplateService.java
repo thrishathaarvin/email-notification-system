@@ -27,7 +27,7 @@ public class TemplateService {
         template.setContentBody(dto.getBody());
 
         EmailTemplate saved = repository.save(template);
-        return new TemplateRequestDto(saved); // ✅ return DTO with ID
+        return new TemplateRequestDto(saved); // return DTO with ID
     }
 
     // READ
